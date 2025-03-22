@@ -6,6 +6,14 @@ if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
+require __DIR__ . '/../classes/Database.php';
+
+use Classes\Database; 
+
+$db = new Database();
+
+$id = $_GET["id"];
+
 ?>
 
 <!DOCTYPE html>
@@ -25,19 +33,56 @@ if (empty($_SESSION['csrf_token'])) {
     <div class="flex flex-col items-center text-center w-full max-w-lg space-y-4">
         <img src="/assets/img/PegaGolpeLogoTexto.png" class="mt-6 mb-3 w-32 md:w-40">
         
+        <?php
+
+
+            // Verificar se a conexão foi estabelecida
+            if ($db->getConnection()) {
+                    
+                $dadosSite = Database::select("SELECT * FROM generatedlinks WHERE id = ?", [$id]);
+
+            } else {
+                echo "Falha na conexão!";
+            }
+            ?>
 
             <div class="relative overflow-x-auto rounded-xl">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded">
                     <tbody>
+                        
 
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                    <?php
+
+                        foreach($dadosSite as $dado){
+
+                            echo '
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 Link de Destino:
                             </th>
                             <td class="px-6 py-4">
-                                Silver
+                                '.$dado['input_link'].'
                             </td>
-                        </tr>
+                        </tr>';
+
+                        
+                        echo '
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Link para ser copiada (ENVIE ESTE):
+                            </th>
+                            <td class="px-6 py-4 flex items-center space-x-4">
+                                <button class="bg-green-600 text-white font-bold font-mono px-4 py-2 rounded-lg w-32 min-w-32 hover:bg-green-700">
+                                    Copiar Link
+                                </button>
+                                <span class="text-gray-900 dark:text-white" id="outputLink">'.$dado['output_link'].'</span>
+                            </td>
+                        </tr>';
+
+                        }
+
+
+                    ?>
 
                     </tbody>
                 </table>

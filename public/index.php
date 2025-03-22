@@ -6,8 +6,6 @@ if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-require __DIR__ . '/../routes.php';
-
 ?>
 
 <!DOCTYPE html>
@@ -30,10 +28,13 @@ require __DIR__ . '/../routes.php';
         <div class="p-6 bg-gray-800 shadow-md rounded-lg w-full">
             <p id="result" class="mt-2 mb-2 text-sm font-semibold text-red-500"></p> <!-- Message output -->
             
-            <form id="urlForm" action="public/linkAnalysis.php" method="POST" class="w-full flex flex-col sm:flex-row gap-3">
+            <form id="urlForm" action="../routes.php" method="POST" class="w-full flex flex-col sm:flex-row gap-3">
+
                 <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                 
-                <input type="text" id="urlInput" name="valor" placeholder="Digite o link aqui..." 
+                <input type="hidden" name="function" value="generateLink">
+                
+                <input type="text" name="urlInput" id="urlInput" name="valor" placeholder="Digite o link aqui..." 
                     class="flex-grow h-12 p-3 rounded-lg bg-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-600 w-full text-lg">
                 
                 <button type="submit"
