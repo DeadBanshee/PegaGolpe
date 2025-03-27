@@ -28,7 +28,7 @@ function generateLink(){
 
         $baseUrl = trim($_POST["urlInput"]);
         $randomId = bin2hex(random_bytes(9));
-        $shortUrl = 'www.pegagolpe.com.br/' . $randomId;
+        $shortUrl = 'www.pegagolpe.com.br/link.php?id=' . $randomId;
 
         $uniqueId = Database::select("SELECT id FROM generatedlinks WHERE id = ?", [$randomId]);
 
