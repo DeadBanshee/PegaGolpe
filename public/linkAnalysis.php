@@ -2,6 +2,8 @@
 
 session_start();
 
+include ("functions.php");
+
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
@@ -49,8 +51,6 @@ $id = $_GET["id"];
             <div class="relative overflow-x-auto rounded-xl">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded">
                     <tbody>
-                        
-
                     <?php
 
                         foreach($dadosSite as $dado){
@@ -69,7 +69,7 @@ $id = $_GET["id"];
                         echo '
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Link para ser copiada (ENVIE ESTE):
+                                Link para ser copiado (ENVIE ESTE):
                             </th>
                             <td class="px-6 py-4 flex items-center space-x-4">
                                 <button class="bg-green-600 text-white font-bold font-mono px-4 py-2 rounded-lg w-32 min-w-32 hover:bg-green-700">
@@ -80,9 +80,100 @@ $id = $_GET["id"];
                         </tr>';
 
                         }
-
-
                     ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="relative overflow-x-auto rounded-xl">
+                <table class="w-full bg-gray-800 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 rounded">
+                    <tbody>
+                    <?php
+
+
+                        echo '
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-center border-gray-200">
+
+                        <th scope="row" colspan="5" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            Informações dos Acessos:
+                        </th>
+                        </tr>';
+
+
+                        echo '
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-center border-gray-200">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            Data
+                        </th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            IP / Provedor de Internet
+                        </th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            Cidade / País 
+                        </th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            Dispositivo
+                        </th>
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            Mais Informações
+                        </th
+                        </tr>';
+
+                                
+                    // Verificar se a conexão foi estabelecida
+                    if ($db->getConnection()) {
+                            
+                        $dadosAcessos = Database::select("SELECT * FROM linkaccess WHERE link_id = ?", [$id]);
+
+                    } else {
+                        echo "Falha na conexão!";
+                    }
+
+                        foreach ($dadosAcessos as $dado):
+                            $countryCode = strtolower(countryNameToCode($dado["access_country"]));
+                            $dataFormatada = date('d/m/Y H:i', strtotime($dado['access_datetime']));
+                        ?>
+                            <tr class="border-t border-gray-600 text-sm text-white text-left">
+                                <!-- Data -->
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <?= $dataFormatada ?>
+                                </td>
+                        
+                                <!-- IP -->
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <div class="flex items-center gap-2">
+                                        <div class="leading-tight items-center justify-center text-center p-2">
+                                        <p class="text-white"> <?= $dado['access_ip'] ?></p>
+                                        <p class="text-white"> <?= $dado['access_provider'] ?></p>
+                                        </div>
+                                    </div>
+                                </td>
+                        
+                                <!-- Cidade / País -->
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <div class="flex items-center gap-2">
+                                        <img src="/assets/img/w40/<?= $countryCode ?>.png" class="w-6 h-4 object-cover rounded">
+                                        <div class="leading-tight p-2">
+                                            <p class="text-white"><?= $dado['access_city'] ?></p>
+                                            <p class="text-gray-400 text-xs"><?= $dado['access_country'] ?></p>
+                                        </div>
+                                    </div>
+                                </td>
+                        
+                                <!-- Dispositivo -->
+                                <td class="px-4 py-3 text-gray-300 whitespace-nowrap">-</td>
+                        
+                                <!-- Link -->
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <a href="moreInfoLink.php?id=<?php echo $dado["id"]?>" class="text-blue-400 hover:underline">Mais Informações</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
                     </tbody>
                 </table>
@@ -90,8 +181,8 @@ $id = $_GET["id"];
 
 
 
+
+
     </div>
-
-
 </body>
 </html>

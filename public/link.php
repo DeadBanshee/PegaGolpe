@@ -14,6 +14,7 @@ $db = new Database();
 
 $id = $_GET["id"];
 
+date_default_timezone_get();
 ?>
 
 <!DOCTYPE html>
@@ -28,13 +29,31 @@ $id = $_GET["id"];
 
 
                     foreach($dadosSite as $dado){
-                    header('location: '.$dado["input_link"].'');
 
 
                     
                     $ip = get_client_ip();
-                    $insertSite = Database::insert("INSERT INTO linkaccess (access_ip) VALUES (?);", [$ip]);
+                    $loc = file_get_contents("http://ip-api.com/json/201.94.195.254");
+                    
 
+                   // $browser = get_browser(null, true);
+
+                    //$loc = file_get_contents("http://ip-api.com/json/$ip");
+
+                    $locdecode = json_decode($loc);
+
+                    date_default_timezone_set($locdecode->timezone); 
+
+                        
+                    echo $loc;
+
+                    $insertSite =
+                    Database::insert("INSERT INTO linkaccess (access_ip, access_state, access_city, access_datetime, access_country, access_provider, access_timezone, access_lon, access_lat, link_id) 
+                                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", 
+                                      ['201.94.195.254', $locdecode->regionName, $locdecode->city, date('Y-m-d H:i:s', time()), $locdecode->country, $locdecode->isp, $locdecode->timezone, $locdecode->lon, $locdecode->lat, $id]);
+
+//                    die();
+                    header('location: '.$dado["input_link"].'');
 
                     exit;
                     }
