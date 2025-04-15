@@ -44,7 +44,7 @@ function generateLink(){
 
         $query = Database::insert("INSERT INTO generatedlinks (id, output_link, input_link, created_at) VALUES (?, ?, ?, ?)", [$randomId, $shortUrl, $baseUrl, $mysqlTimestamp]);
 
-        header("Location: /public/linkAnalysis.php?id=" . $randomId);
+        header("Location: linkAnalysis.php?id=" . $randomId);
 
     }
 

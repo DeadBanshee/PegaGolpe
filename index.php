@@ -17,6 +17,10 @@ if (empty($_SESSION['csrf_token'])) {
     <link href="/assets/css/output.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9858650677619945"
+     crossorigin="anonymous"></script>
+
 </head>
 
 <body class="flex flex-col min-h-screen bg-gray-400">
@@ -29,7 +33,7 @@ if (empty($_SESSION['csrf_token'])) {
         <div class="p-6 bg-gray-800 shadow-md rounded-lg w-full">
             <p id="result" class="mt-2 mb-2 text-sm font-semibold text-red-500"></p> <!-- Message output -->
             
-            <form id="urlForm" action="../routes.php" method="POST" class="w-full flex flex-col sm:flex-row gap-3">
+            <form id="urlForm" action="/routes.php" method="POST" class="w-full flex flex-col sm:flex-row gap-3">
 
                 <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
                 
@@ -65,7 +69,7 @@ if (empty($_SESSION['csrf_token'])) {
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-7xl">
             <!-- Ferramenta 1 -->
-            <a href="https://www.google.com">
+            <a href="checkCPF.php">
                 <div class="flex flex-col items-center bg-gray-700 rounded-lg p-4 shadow-md">
                     <img src="/assets/img/personal-information.png" class="w-16 md:w-20 m-auto">
                     <h2 class="mt-4 text-gray-100 font-bold">Conferir CPF</h2>
@@ -73,7 +77,7 @@ if (empty($_SESSION['csrf_token'])) {
                 </div>
             </a>
 
-            <a href="https://www.google.com">
+            <a href="checkCNPJ.php">
                 <div class="flex flex-col items-center bg-gray-700 rounded-lg p-4 shadow-md">
                     <img src="/assets/img/office-building.png" class="w-16 md:w-20 m-auto">
                     <h2 class="mt-4 text-gray-100 font-bold">Conferir CNPJ</h2>
@@ -99,7 +103,7 @@ if (empty($_SESSION['csrf_token'])) {
                 </div>
             </a>
 
-            <a href="https://www.google.com">
+            <a href="generatePassword.php">
                 <div class="flex flex-col items-center bg-gray-700 rounded-lg p-4 shadow-md">
                     <img src="/assets/img/padlock.png" class="w-16 md:w-20 m-auto">
                     <h2 class="mt-4 text-gray-100 font-bold">Gerador de Senhas</h2>
