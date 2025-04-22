@@ -21,8 +21,8 @@ if (empty($_SESSION['csrf_token'])) {
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 
-<body class="flex flex-col items-center justify-center min-h-screen bg-gray-400 p-4">
-
+<body class="flex flex-col min-h-screen bg-gray-400">
+    <main class="flex-grow flex flex-col items-center justify-center p-4">
     <!-- LOGO E FORM -->
     <div class="flex flex-col items-center text-center w-full max-w-lg space-y-4" x-data="passwordGenerator()">
         <a href="index.php" ><img src="/assets/img/PegaGolpeLogoTexto.png" class="mt-6 mb-3 w-32 md:w-40"></a>
@@ -56,6 +56,13 @@ if (empty($_SESSION['csrf_token'])) {
             </div>
         </div>
     </div>
+    </main>
+
+    <?php
+
+    include("footer.php");
+
+    ?>
 
 </body>
 </html>
